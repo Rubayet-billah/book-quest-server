@@ -19,7 +19,17 @@ const getAllBooks = async () => {
   }
 };
 
+const getSingleBook = async (id: string) => {
+  try {
+    const result = await Book.findById(id);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const bookService = {
   createBook,
   getAllBooks,
+  getSingleBook,
 };

@@ -28,4 +28,22 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const bookController = { createBook, getAllBooks };
+const getSingleBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const bookId = req.params.id;
+    const result = await bookService.getSingleBook(bookId);
+    res.send({
+      status: "success",
+      message: "Book retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const bookController = { createBook, getAllBooks, getSingleBook };
