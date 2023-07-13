@@ -6,7 +6,8 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
     const book = req.body;
     const result = await bookService.createBook(book);
     res.send({
-      status: "sccess",
+      status: "success",
+      message: "Book created successfully",
       data: result,
     });
   } catch (error) {
@@ -14,4 +15,17 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const bookController = { createBook };
+const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await bookService.getAllBooks();
+    res.send({
+      status: "success",
+      message: "All books retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const bookController = { createBook, getAllBooks };

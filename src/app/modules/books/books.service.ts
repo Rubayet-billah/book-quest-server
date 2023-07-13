@@ -10,6 +10,16 @@ const createBook = async (book: IBook) => {
   }
 };
 
+const getAllBooks = async () => {
+  try {
+    const result = await Book.find({});
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const bookService = {
   createBook,
+  getAllBooks,
 };
