@@ -28,8 +28,18 @@ const getSingleBook = async (id: string) => {
   }
 };
 
+const updateBook = async (id: string, bookData: Partial<IBook>) => {
+  try {
+    const result = await Book.findOneAndUpdate({ _id: id }, bookData);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const bookService = {
   createBook,
   getAllBooks,
   getSingleBook,
+  updateBook,
 };

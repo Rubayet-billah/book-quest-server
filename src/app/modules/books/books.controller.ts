@@ -46,4 +46,24 @@ const getSingleBook = async (
   }
 };
 
-export const bookController = { createBook, getAllBooks, getSingleBook };
+const updateBook = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bookId = req.params.id;
+    const { ...bookData } = req.body;
+    const result = await bookService.updateBook(bookId, bookData);
+    res.send({
+      status: "success",
+      message: "Book updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const bookController = {
+  createBook,
+  getAllBooks,
+  getSingleBook,
+  updateBook,
+};
