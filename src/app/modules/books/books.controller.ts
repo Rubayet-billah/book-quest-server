@@ -60,10 +60,24 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
     console.log(error);
   }
 };
+const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bookId = req.params.id;
+    const result = await bookService.deleteBook(bookId);
+    res.send({
+      status: "success",
+      message: "Book deleted successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const bookController = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateBook,
+  deleteBook,
 };
