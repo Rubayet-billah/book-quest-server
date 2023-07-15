@@ -15,6 +15,21 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { ...userData } = req.body;
+    const result = await userService.loginUser(userData);
+    res.send({
+      status: "success",
+      message: "User logged in successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userController = {
   createUser,
+  loginUser,
 };

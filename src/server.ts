@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import router from "./app/routes/routes";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import httpStatus from "http-status";
 require("dotenv").config();
 
 const app = express();
@@ -31,4 +33,22 @@ app.get("/", (req: Request, res: Response) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+
+// error handler middleware
+app.use(globalErrorHandler);
+
+// not found handler
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: "Not found",
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: "API not found",
+      },
+    ],
+  });
+  next();
 });
