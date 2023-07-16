@@ -11,12 +11,6 @@ const globalErrorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // process.env.NODE_ENV === "development"
-  //   ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
-  //   : errorlogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
-
-  console.log("from global error handler", error);
-
   let statusCode = 500;
   let message = "Something went wrong !";
   let errorMessages: IGenericErrorMessage[] = [];

@@ -4,20 +4,16 @@ import User from "./user.model";
 import bcrypt from "bcrypt";
 
 const createUser = async (userData: IUser) => {
-  try {
-    const { email, password } = userData;
+  const { email } = userData;
 
-    const isUserExist = await User.findOne({ email: email });
+  const isUserExist = await User.findOne({ email: email });
 
-    if (isUserExist) {
-      throw Error("User already exist");
-    }
-
-    const result = await User.create(userData);
-    return result;
-  } catch (error) {
-    console.log(error);
+  if (isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User already exists");
   }
+
+  const result = await User.create(userData);
+  return result;
 };
 
 const loginUser = async (loginData: Partial<IUser>) => {
