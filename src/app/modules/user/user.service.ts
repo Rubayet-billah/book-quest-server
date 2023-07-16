@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 
@@ -19,22 +21,18 @@ const createUser = async (userData: IUser) => {
 };
 
 const loginUser = async (loginData: Partial<IUser>) => {
-  try {
-    const { email, password: givenPassword } = loginData;
+  const { email, password: givenPassword } = loginData;
 
-    const isUserExist = await User.findOne({ email: email });
-    if (isUserExist) {
-      const { password: savedPassword } = isUserExist;
-      if (await bcrypt.compare(givenPassword as string, savedPassword)) {
-        return isUserExist;
-      } else {
-        throw new Error("Wrong password");
-      }
+  const isUserExist = await User.findOne({ email: email });
+  if (isUserExist) {
+    const { password: savedPassword } = isUserExist;
+    if (await bcrypt.compare(givenPassword as string, savedPassword)) {
+      return isUserExist;
     } else {
-      throw Error("User does not exist");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Wrong password");
     }
-  } catch (error) {
-    console.log(error);
+  } else {
+    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
   }
 };
 
