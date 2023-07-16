@@ -1,13 +1,15 @@
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 
-const createToken = (
-  payload: Record<string, unknown>,
-  secret: Secret,
-  expireTime: string
-): string => {
-  return jwt.sign(payload, secret, {
-    expiresIn: expireTime,
-  });
+const createToken = (userEmail: string) => {
+  // Customize the token signing options according to your requirements
+  const secretKey = process.env.JWT_SECRET || "default-secret-key";
+  const expiresIn = "1h";
+
+  const payload = {
+    userEmail: userEmail,
+  };
+
+  return jwt.sign(payload, secretKey, { expiresIn });
 };
 
 const verifyToken = (token: string, secret: Secret): JwtPayload => {

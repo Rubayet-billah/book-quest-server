@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import User from "./user.model";
 import bcrypt from "bcrypt";
+import { jwtHelpers } from "../../../helpers/jwtHelpers";
 
 const createUser = async (userData: IUser) => {
   const { email } = userData;
@@ -12,8 +13,11 @@ const createUser = async (userData: IUser) => {
     throw new ApiError(httpStatus.NOT_FOUND, "User already exists");
   }
 
-  const result = await User.create(userData);
-  return result;
+  const accessToken = jwtHelpers.createToken(email);
+
+  const user = await User.create(userData);
+
+  return { user, accessToken };
 };
 
 const loginUser = async (loginData: Partial<IUser>) => {

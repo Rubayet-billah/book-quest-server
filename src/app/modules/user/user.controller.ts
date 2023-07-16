@@ -4,11 +4,11 @@ import { userService } from "./user.service";
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { ...userData } = req.body;
-    const result = await userService.createUser(userData);
+    const { user, accessToken } = await userService.createUser(userData);
     res.send({
       status: "success",
       message: "User created successfully",
-      data: result,
+      data: { email: user.email, accessToken },
     });
   } catch (error) {
     next(error);
