@@ -21,13 +21,14 @@ const createUser = async (userData: IUser) => {
 };
 
 const loginUser = async (loginData: Partial<IUser>) => {
-  const { email, password: givenPassword } = loginData;
+  const { email: givenEmail, password: givenPassword } = loginData;
 
-  const isUserExist = await User.findOne({ email: email });
+  const isUserExist = await User.findOne({ email: givenEmail });
   if (isUserExist) {
-    const { password: savedPassword } = isUserExist;
+    const { email, password: savedPassword } = isUserExist;
+    const accessToken = jwtHelpers.createToken(email);
     if (await bcrypt.compare(givenPassword as string, savedPassword)) {
-      return isUserExist;
+      return { user: isUserExist, accessToken };
     } else {
       throw new ApiError(httpStatus.BAD_REQUEST, "Wrong password");
     }

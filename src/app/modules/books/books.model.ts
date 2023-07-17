@@ -21,6 +21,10 @@ const bookSchema = new Schema<IBook>({
     type: String,
     required: true,
   },
+  authorEmail: {
+    type: String,
+    required: true,
+  },
   genre: {
     type: String,
     required: true,

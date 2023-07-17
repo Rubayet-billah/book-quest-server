@@ -7,7 +7,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const { user, accessToken } = await userService.createUser(userData);
     res.send({
       status: "success",
-      message: "User created successfully",
+      message: "User registered successfully",
       data: { email: user.email, accessToken },
     });
   } catch (error) {
@@ -18,11 +18,11 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { ...userData } = req.body;
-    const result = await userService.loginUser(userData);
+    const { user, accessToken } = await userService.loginUser(userData);
     res.send({
       status: "success",
       message: "User logged in successfully",
-      data: result,
+      data: { email: user.email, accessToken },
     });
   } catch (error) {
     next(error);
