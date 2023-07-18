@@ -9,4 +9,6 @@ const user_controller_1 = require("./user.controller");
 const router = express_1.default.Router();
 router.post("/register", user_controller_1.userController.createUser);
 router.post("/login", user_controller_1.userController.loginUser);
+router.get("/:email", user_controller_1.userController.getUser);
+router.patch("/wishlist", user_controller_1.userController.wishlistBook);
 exports.userRoutes = router;

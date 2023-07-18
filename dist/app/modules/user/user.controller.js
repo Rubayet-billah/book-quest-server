@@ -43,7 +43,41 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         res.send({
             status: "success",
             message: "User logged in successfully",
-            data: { email: user.email, accessToken },
+            data: { email: user.email, accessToken, wishlist: user.wishlist },
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.params;
+        const result = yield user_service_1.userService.getUser(email);
+        res.send({
+            status: "success",
+            message: "User retrieved successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+const wishlistBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userEmail, bookId } = req.body; // Assuming you have the user's ID and book's ID in the request body
+        // // Check if the book exists in the database
+        // const book = await Book.findById(bookId);
+        // if (!book) {
+        //   return res.status(404).send({ status: "error", message: "Book not found" });
+        // }
+        // Add the book ID to the user's wishlist array
+        const user = yield user_service_1.userService.wishlistBook(userEmail, bookId);
+        res.send({
+            status: "success",
+            message: "Book added to wishlist successfully",
+            data: { email: user.email, wishlist: user.wishlist },
         });
     }
     catch (error) {
@@ -53,4 +87,6 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 exports.userController = {
     createUser,
     loginUser,
+    getUser,
+    wishlistBook,
 };

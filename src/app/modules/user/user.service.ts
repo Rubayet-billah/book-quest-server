@@ -48,6 +48,8 @@ const getUser = async (email: string) => {
   }
 };
 
+import { Schema, Types } from "mongoose";
+
 const wishlistBook = async (userEmail: string, bookId: string) => {
   // Find the user by their ID
   const user = await User.findOne({ email: userEmail });
@@ -57,7 +59,7 @@ const wishlistBook = async (userEmail: string, bookId: string) => {
   }
 
   // Check if the book already exists in the user's wishlist
-  if (user.wishlist.includes(bookId)) {
+  if (user.wishlist && user.wishlist.includes(bookId)) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Book already exists in wishlist"
@@ -65,7 +67,11 @@ const wishlistBook = async (userEmail: string, bookId: string) => {
   }
 
   // Add the book ID to the user's wishlist array
-  user?.wishlist.push(bookId);
+  if (user.wishlist) {
+    user.wishlist.push(bookId);
+  } else {
+    user.wishlist = [bookId];
+  }
 
   // Save the updated user with the new book added to the wishlist
   await user.save();

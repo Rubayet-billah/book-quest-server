@@ -15,7 +15,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
-  wishlist: [{ type: Schema.Types.ObjectId, ref: "Book" }],
+  wishlist: [{ type: String, ref: "Book" }],
 });
 
 userSchema.pre("save", async function (next) {

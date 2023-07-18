@@ -34,6 +34,7 @@ const loginUser = (loginData) => __awaiter(void 0, void 0, void 0, function* () 
     if (isUserExist) {
         const { email, password: savedPassword } = isUserExist;
         const accessToken = jwtHelpers_1.jwtHelpers.createToken(email);
+        console.log(givenPassword);
         if (yield bcrypt_1.default.compare(givenPassword, savedPassword)) {
             return { user: isUserExist, accessToken };
         }
@@ -45,7 +46,39 @@ const loginUser = (loginData) => __awaiter(void 0, void 0, void 0, function* () 
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User does not exist");
     }
 });
+const getUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUserExist = yield user_model_1.default.findOne({ email }, { email: 1, wishlist: 1 });
+    if (isUserExist) {
+        return isUserExist;
+    }
+    else {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User does not exist");
+    }
+});
+const wishlistBook = (userEmail, bookId) => __awaiter(void 0, void 0, void 0, function* () {
+    // Find the user by their ID
+    const user = yield user_model_1.default.findOne({ email: userEmail });
+    if (!user) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+    }
+    // Check if the book already exists in the user's wishlist
+    if (user.wishlist && user.wishlist.includes(bookId)) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Book already exists in wishlist");
+    }
+    // Add the book ID to the user's wishlist array
+    if (user.wishlist) {
+        user.wishlist.push(bookId);
+    }
+    else {
+        user.wishlist = [bookId];
+    }
+    // Save the updated user with the new book added to the wishlist
+    yield user.save();
+    return user;
+});
 exports.userService = {
     createUser,
     loginUser,
+    getUser,
+    wishlistBook,
 };
