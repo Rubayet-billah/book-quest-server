@@ -22,7 +22,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     res.send({
       status: "success",
       message: "User logged in successfully",
-      data: { email: user.email, accessToken },
+      data: { email: user.email, accessToken, wishlist: user.wishlist },
     });
   } catch (error) {
     next(error);

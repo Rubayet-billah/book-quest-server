@@ -3,6 +3,7 @@ import ApiError from "../../../errors/ApiError";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { IUser } from "./user.interface";
 
 const createUser = async (userData: IUser) => {
   const { email } = userData;
@@ -27,6 +28,7 @@ const loginUser = async (loginData: Partial<IUser>) => {
   if (isUserExist) {
     const { email, password: savedPassword } = isUserExist;
     const accessToken = jwtHelpers.createToken(email);
+    console.log(givenPassword);
     if (await bcrypt.compare(givenPassword as string, savedPassword)) {
       return { user: isUserExist, accessToken };
     } else {
