@@ -38,7 +38,7 @@ const loginUser = async (loginData: Partial<IUser>) => {
 };
 
 const getUser = async (email: string) => {
-  const isUserExist = await User.findOne({ email });
+  const isUserExist = await User.findOne({ email }, { email: 1, wishlist: 1 });
   if (isUserExist) {
     return isUserExist;
   } else {
