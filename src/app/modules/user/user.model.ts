@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
+import { IUser } from "./user.interface";
 
 const userSchema = new Schema<IUser>({
   name: {
@@ -14,6 +15,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
   },
+  wishlist: [{ type: Schema.Types.ObjectId, ref: "Book" }],
 });
 
 userSchema.pre("save", async function (next) {
