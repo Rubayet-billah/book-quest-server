@@ -29,6 +29,20 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.params;
+    const result = await userService.getUser(email);
+    res.send({
+      status: "success",
+      message: "User retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const wishlistBook = async (
   req: Request,
   res: Response,
@@ -59,5 +73,6 @@ const wishlistBook = async (
 export const userController = {
   createUser,
   loginUser,
+  getUser,
   wishlistBook,
 };

@@ -37,6 +37,15 @@ const loginUser = async (loginData: Partial<IUser>) => {
   }
 };
 
+const getUser = async (email: string) => {
+  const isUserExist = await User.findOne({ email });
+  if (isUserExist) {
+    return isUserExist;
+  } else {
+    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
+  }
+};
+
 const wishlistBook = async (userEmail: string, bookId: string) => {
   // Find the user by their ID
   const user = await User.findOne({ email: userEmail });
@@ -65,5 +74,6 @@ const wishlistBook = async (userEmail: string, bookId: string) => {
 export const userService = {
   createUser,
   loginUser,
+  getUser,
   wishlistBook,
 };
